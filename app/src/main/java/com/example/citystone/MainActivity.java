@@ -2,9 +2,11 @@ package com.example.citystone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,20 +18,38 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    // informace o objednavce
+    HashMap<String, HashMap<String,String>> Order = new HashMap<String, HashMap<String, String>>();
+
+    // ktere tlacitko je stisknute RED = 0, GREEN = 1, BLUE = 2
+    private static int projectPressed = 0;
+
+    // ktere tlacitko stiskunte AKTIVNI = 0, PASIVNI = 1
+    private static int actPas = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getData();
+
         register();
 
+    }
+
+
+    private void openActivity2(){
+        Intent intent = new Intent( this, Concrete.class );
+        startActivity( intent );
+        Concrete.Order = Order;
     }
 
     private void register(){
@@ -40,8 +60,18 @@ public class MainActivity extends AppCompatActivity {
         final Button active = (Button) findViewById( R.id.button12 );
         final Button finished = (Button) findViewById( R.id.button13 );
 
+        final ListView fruitsList = (ListView) findViewById( R.id.fruitsList );
+
         final int LIGHTBLUE = Color.parseColor( "#1E90FF" );
         final int DEEPBLUE = Color.parseColor( "#2F3947" );
+
+        fruitsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Concrete.inHashPos = (int) fruitsList.getItemIdAtPosition( i );
+                openActivity2();
+            }
+        });
 
         red.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,16 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 red.setBackgroundColor( LIGHTBLUE );
                 green.setBackgroundColor( DEEPBLUE );
                 blue.setBackgroundColor( DEEPBLUE );
-
-            }
-        });
-
-        blue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                red.setBackgroundColor( DEEPBLUE );
-                green.setBackgroundColor( DEEPBLUE );
-                blue.setBackgroundColor( LIGHTBLUE );
+                projectPressed = 0;
+                getData();
             }
         });
 
@@ -68,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
                 red.setBackgroundColor( DEEPBLUE );
                 green.setBackgroundColor( LIGHTBLUE );
                 blue.setBackgroundColor( DEEPBLUE );
+                projectPressed = 1;
+                getData();
+            }
+        });
+
+        blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                red.setBackgroundColor( DEEPBLUE );
+                green.setBackgroundColor( DEEPBLUE );
+                blue.setBackgroundColor( LIGHTBLUE );
+                projectPressed = 2;
+                getData();
             }
         });
 
@@ -76,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 active.setBackgroundColor( LIGHTBLUE );
                 finished.setBackgroundColor( DEEPBLUE );
-                getData( "http://planaxis.space/selectActive.php" );
+                actPas = 0;
+                getData();
             }
         });
 
@@ -85,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 active.setBackgroundColor( DEEPBLUE );
                 finished.setBackgroundColor( LIGHTBLUE );
-                getData( "http://planaxis.space/selectFinished.php" );
+                actPas = 1;
+                getData();
             }
         });
 
@@ -94,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, HashMap<String,String>> parseJsonData(String jsonStrings) {
         HashMap<String, HashMap<String,String>> Hash = new HashMap<String, HashMap<String,String>>();
 
-        if( jsonStrings != null ) {
+        if( jsonStrings != null && jsonStrings.indexOf( "[{" ) != -1 ) {
             Hash = Parser.FromJSON( jsonStrings );
         } else {
             System.out.println( "ERROR" );
@@ -122,13 +159,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getData( String url ){
+    private String getApiUrl(){
+
+        if( projectPressed == 0 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=0&actPas=0" );
+        if( projectPressed == 1 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=1&actPas=0" );
+        if( projectPressed == 2 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=2&actPas=0" );
+
+        if( projectPressed == 0 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=0&actPas=1" );
+        if( projectPressed == 1 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=1&actPas=1" );
+        if( projectPressed == 2 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=2&actPas=1" );
+
+        return null;
+
+    }
+
+    private void getData(){
+
+        String url = getApiUrl();
+
         StringRequest request = new StringRequest( url , new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 HashMap<String, HashMap<String,String>> Hash;
                 Hash = parseJsonData( string );
                 createTable( Hash );
+                Order = Hash;
             }
         }, new Response.ErrorListener() {
             @Override
