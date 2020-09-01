@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Concrete.inHashPos = (int) fruitsList.getItemIdAtPosition( i );
-                openActivity2();
+
+                if( fruitsList.getItemAtPosition( i ) != "Nenalezeny žádné záznamy" ) {
+                    openActivity2();
+                }
             }
         });
 
@@ -134,7 +137,9 @@ public class MainActivity extends AppCompatActivity {
         if( jsonStrings != null && jsonStrings.indexOf( "[{" ) != -1 ) {
             Hash = Parser.FromJSON( jsonStrings );
         } else {
-            System.out.println( "ERROR" );
+            HashMap<String, String> notFound = new HashMap<String, String>();
+            notFound.put( "produkt", "Nenalezeny žádné záznamy" );
+            Hash.put( "0", notFound );
         }
 
         return Hash;
@@ -161,13 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
     private String getApiUrl(){
 
-        if( projectPressed == 0 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=0&actPas=0" );
-        if( projectPressed == 1 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=1&actPas=0" );
-        if( projectPressed == 2 && actPas == 0 ) return( "http://planaxis.space/selectActive.php?proj=2&actPas=0" );
+        if( projectPressed == 0 && actPas == 0 ) return( "https://planaxis.space/selectActive.php?proj=0&actPas=0" );
+        if( projectPressed == 1 && actPas == 0 ) return( "https://planaxis.space/selectActive.php?proj=1&actPas=0" );
+        if( projectPressed == 2 && actPas == 0 ) return( "https://planaxis.space/selectActive.php?proj=2&actPas=0" );
 
-        if( projectPressed == 0 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=0&actPas=1" );
-        if( projectPressed == 1 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=1&actPas=1" );
-        if( projectPressed == 2 && actPas == 1 ) return( "http://planaxis.space/selectFinished.php?proj=2&actPas=1" );
+        if( projectPressed == 0 && actPas == 1 ) return( "https://planaxis.space/selectFinished.php?proj=0&actPas=1" );
+        if( projectPressed == 1 && actPas == 1 ) return( "https://planaxis.space/selectFinished.php?proj=1&actPas=1" );
+        if( projectPressed == 2 && actPas == 1 ) return( "https://planaxis.space/selectFinished.php?proj=2&actPas=1" );
 
         return null;
 
