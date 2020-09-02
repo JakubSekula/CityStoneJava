@@ -45,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
+
 
     private void openActivity2(){
         Intent intent = new Intent( this, Concrete.class );

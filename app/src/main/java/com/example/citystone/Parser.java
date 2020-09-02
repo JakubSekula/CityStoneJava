@@ -17,21 +17,13 @@ public class Parser {
     private static HashMap<String,String> createMap( List<String> list ){
         HashMap<String,String> inner = new HashMap<String,String>();
 
-        int i = 0;
-
         for( String mess : list ){
-            if( i == 0 ){
-                i++;
-                continue;
-            }
 
             mess = changeOccurances( mess, "\"", "" );
 
             String[] split = mess.split( ":" );
 
             inner.put( split[ 0 ], split[ 1 ] );
-
-            i++;
         }
 
         return inner;
