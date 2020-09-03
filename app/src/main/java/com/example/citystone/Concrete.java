@@ -14,7 +14,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Concrete extends AppCompatActivity {
 
@@ -68,6 +72,36 @@ public class Concrete extends AppCompatActivity {
 
     }
 
+    private String formateDate( String date ){
+
+        return "01. 08 .2020";
+
+    }
+
+    private String getDate(){
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        return formateDate( formattedDate );
+
+    }
+
+    private void sendMail( String key ){
+
+        // lukas.perina98@gmail.com
+        String email = "lukas.perina98@gmail.com";
+        String subject = "Ukonceni objednavky " + Order.get( key ).get( "id" ) + " ze strediska " + Order.get( key ).get( "pracovisko" );
+        String message = "Dobry den,\n\nObjednavka s evidencnim cislem: " + Order.get( key ).get( "id" ) + " ze strediska " + Order.get( key ).get( "pracovisko" ) + ", byla dne " + getDate() + " uspesne dokoncena.\n\n" + "Odeslano sluzbou CityStoneAPP";
+
+        SendMail sm = new SendMail(this, email, subject, message);
+
+        sm.execute();
+
+    }
+
     private void register(){
 
         final Button done = ( Button ) findViewById( R.id.button2 );
@@ -80,6 +114,7 @@ public class Concrete extends AppCompatActivity {
                 for ( String key : Order.keySet() ) {
                     if( i == inHashPos ) {
                         fullSend( Order.get( key ).get( "id" ) );
+                        sendMail( key );
                     }
                     i++;
                 }
