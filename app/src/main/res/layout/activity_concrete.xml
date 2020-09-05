@@ -9,10 +9,10 @@
     <TextView
         android:id="@+id/A2Heading"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:gravity="center"
         android:text="TextView"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,8 +20,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="120dp"
-        android:layout_height="65dp"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
         android:layout_marginBottom="34dp"
@@ -32,8 +32,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="120dp"
-        android:layout_height="65dp"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="34dp"
         android:layout_marginRight="34dp"
         android:layout_marginBottom="34dp"
@@ -41,4 +41,38 @@
         android:text="Ukončit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/Fieldpoznamka"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="100dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/Poznamka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Poznámka: "
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/Fieldpoznamka"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ListView
+        android:id="@+id/ListV"
+        android:layout_width="0dp"
+        android:layout_height="344dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/A2Heading" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
