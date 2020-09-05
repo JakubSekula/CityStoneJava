@@ -55,6 +55,21 @@ public class Parser {
         return json;
     }
 
+    public static HashMap<String, HashMap<String,String>> parseJsonData(String jsonStrings) {
+        HashMap<String, HashMap<String,String>> Hash = new HashMap<String, HashMap<String,String>>();
+
+        if( jsonStrings != null && jsonStrings.indexOf( "[{" ) != -1 ) {
+            Hash = Parser.FromJSON( jsonStrings );
+        } else {
+            HashMap<String, String> notFound = new HashMap<String, String>();
+            notFound.put( "produkt", "Nenalezeny žádné záznamy" );
+            Hash.put( "0", notFound );
+        }
+
+        return Hash;
+
+    }
+
     private static List<String> returnParsed( String json, String pattern ){
 
         List<String> array = new ArrayList<String>();

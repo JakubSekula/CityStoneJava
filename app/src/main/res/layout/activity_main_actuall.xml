@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivityActuall">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/redbtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".33"
+            android:background="@drawable/dlazby"
+            android:text="Citystonedesign Dlažby"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/greenbtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".33"
+            android:background="@drawable/ploty"
+            android:text="Citystonedesign Ploty"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bluebtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".33"
+            android:background="@drawable/antiko"
+            android:text="Citystonedesign Antiko"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
