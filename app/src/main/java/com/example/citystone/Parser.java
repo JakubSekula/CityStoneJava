@@ -1,5 +1,6 @@
 package com.example.citystone;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Parser {
 
             mess = changeOccurances( mess, "\"", "" );
 
-            String[] split = mess.split( ":" );
+            String[] split = mess.split(":");
 
             inner.put( split[ 0 ], split[ 1 ] );
         }
@@ -62,12 +63,11 @@ public class Parser {
             Hash = Parser.FromJSON( jsonStrings );
         } else {
             HashMap<String, String> notFound = new HashMap<String, String>();
-            notFound.put( "produkt", "Nenalezeny žádné záznamy" );
+            notFound.put( "cobjednavky", "Nenalezeny žádné záznamy" );
             Hash.put( "0", notFound );
         }
 
         return Hash;
-
     }
 
     private static List<String> returnParsed( String json, String pattern ){

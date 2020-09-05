@@ -42,7 +42,7 @@ public class Concrete extends AppCompatActivity {
 
         for ( String key : Order.keySet() ) {
             if( i == inHashPos ) {
-                header.setText( "Objednávka: " + Order.get(key).get("produkt"));
+                header.setText( "Objednávka: " + Order.get(key).get("cobjednavky"));
             }
             i++;
         }

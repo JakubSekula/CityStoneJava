@@ -34,6 +34,7 @@ public class MainActivityActuall extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
+                MainActivity.projectPressed = 1;
                 openActivity();
             }
         });
@@ -41,6 +42,7 @@ public class MainActivityActuall extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
+                MainActivity.projectPressed = 2;
                 openActivity();
             }
         });
@@ -48,6 +50,7 @@ public class MainActivityActuall extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
+                MainActivity.projectPressed = 3;
                 openActivity();
             }
         });
