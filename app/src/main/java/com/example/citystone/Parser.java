@@ -1,6 +1,5 @@
 package com.example.citystone;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,8 @@ public class Parser {
 
     private static HashMap<String,String> createMap( List<String> list ){
         HashMap<String,String> inner = new HashMap<String,String>();
+
+        System.out.println( list );
 
         for( String mess : list ){
 
@@ -40,7 +41,8 @@ public class Parser {
         HashMap<String, HashMap<String, String>> outer = new HashMap<String, HashMap<String, String>>();
 
         for( String message : array ){
-            list = returnParsed( message, "," );
+
+            list = returnParsed( message, "\",\"" );
             help = createMap( list );
             String[] helpf;
             if( pkey == true ) {
@@ -96,6 +98,8 @@ public class Parser {
     }
 
     public static HashMap<String, HashMap<String,String>> FromJSON( String json ){
+
+        json = changeOccurances( json, "null", "\"null\"");
 
         HashMap<String, HashMap<String,String>> fin = new HashMap<String, HashMap<String,String>>();
 
