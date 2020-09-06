@@ -1,12 +1,18 @@
 package com.example.citystone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,14 +47,20 @@ public class Concrete extends AppCompatActivity {
 
     }
 
-    private void getProducts( String key ){
-        StringRequest request = new StringRequest( "http://planaxis.space/getProducts.php?cobjednavky="+Order.get( key ).get( "cobjednavky" )+"&pracovisko="+Order.get( key ).get( "pracovisko" ) , new Response.Listener<String>() {
+    private int getProducts( final String key ){
+
+        String url ="http://planaxis.space/getProducts.php?cobjednavky=" + Order.get( key ).get( "cobjednavky" )+"&pracovisko=" + Order.get( key ).get( "pracovisko" );
+
+        System.out.println( url );
+
+        StringRequest request = new StringRequest( url, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 HashMap<String, HashMap<String,String>> Hash;
+                Parser.pkey = false;
                 Hash = Parser.parseJsonData( string );
                 Concrete.HashIt = Hash;
-                System.out.println( HashIt );
+                createTable( key );
             }
         }, new Response.ErrorListener() {
             @Override
@@ -59,27 +71,45 @@ public class Concrete extends AppCompatActivity {
 
         RequestQueue rQueue = Volley.newRequestQueue(Concrete.this);
         rQueue.add(request);
+        return 1;
     }
 
     private void createTable( String key ){
-        ListView lv = ( ListView ) findViewById( R.id.ListV );
+        TableLayout tl = ( TableLayout ) findViewById( R.id.table );
 
-        List<String> fruits_list = new ArrayList<String>();
+        tl.setStretchAllColumns( true );
+        tl.bringToFront();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, fruits_list);
-
-        lv.setAdapter(arrayAdapter);
-
-        getProducts( key );
-
-        System.out.println( Concrete.HashIt );
+        TableRow tr1 = new TableRow( this );
+        TextView c11 = new TextView( this );
+        c11.setText( "Produkt:" );
+        c11.setTextSize( 22 );
+        c11.setGravity( Gravity.CENTER );
+        c11.setTextColor(Color.parseColor( "#000000" ) );
+        TextView c22 = new TextView( this );
+        c22.setText( "Pocet:" );
+        c22.setTextSize( 22 );
+        c22.setGravity( Gravity.CENTER );
+        c22.setTextColor(Color.parseColor( "#000000" ) );
+        tr1.addView( c11 );
+        tr1.addView( c22 );
+        tl.addView( tr1 );
 
         for( String ikey : HashIt.keySet() ) {
-            fruits_list.add( HashIt.get( ikey ).get( "produkt" ) + "                        počet: " + HashIt.get( ikey ).get( "pocet" ) );
+            TableRow tr = new TableRow( this );
+            TextView c1 = new TextView( this );
+            c1.setText( HashIt.get( ikey ).get( "produkt" ) );
+            c1.setTextSize( 18 );
+            c1.setGravity( Gravity.CENTER );
+            TextView c2 = new TextView( this );
+            c2.setText( HashIt.get( ikey ).get( "pocet" ) );
+            c2.setGravity( Gravity.CENTER );
+            c2.setTextSize( 18 );
+            tr.addView( c1 );
+            tr.addView( c2 );
+            tl.addView( tr );
         }
 
-        arrayAdapter.notifyDataSetChanged();
     }
 
     private void prepareScreen(){
@@ -95,8 +125,10 @@ public class Concrete extends AppCompatActivity {
                     done.setText( "Ukončeno" );
                     isClickable = false;
                 }
-                createTable( key );
-                note.setText( Order.get( key ).get( "poznamka" ) );
+                getProducts( key );
+                if( !Order.get( key ).get( "poznamka" ).equals( "null" ) ) {
+                    note.setText(Order.get(key).get("poznamka"));
+                }
                 header.setText( "Objednávka č.: " + Order.get(key).get("cobjednavky"));
             }
             i++;
@@ -160,7 +192,8 @@ public class Concrete extends AppCompatActivity {
         // lukas.perina98@gmail.com
         String email = "kubasekula@seznam.cz";
         String subject = "Ukonceni objednavky " + Order.get( key ).get( "id" ) + " ze strediska '" + Order.get( key ).get( "nazov" ) +"'";
-        String message = "Dobry den,\n\nObjednavka s evidencnim cislem: " + Order.get( key ).get( "id" ) + " ze strediska '" + Order.get( key ).get( "nazov" ) + "', byla dne " + getDate() + " uspesne dokoncena.\n\n" + "Odeslano sluzbou CityStoneAPP";
+        String message = "Dobry den,\n\nObjednavka s evidencnim cislem: " + Order.get( key ).get( "id" ) + " ze strediska '" + Order.get( key ).get( "nazov" ) + "', byla dne " + getDate() + " uspesne dokoncena.\n\n" +
+                "Poznámka k dokončené objednávce: " + Order.get( key ).get( "poznamka" ) + ". \n\n Odeslano sluzbou CityStoneAPP";
 
         SendMail sm = new SendMail(this, email, subject, message);
 

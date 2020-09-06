@@ -21,6 +21,14 @@ public class MainActivityActuall extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.projectPressed = 1;
+        MainActivity.actPas = 0;
+    }
+
+
     private void openActivity(){
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );

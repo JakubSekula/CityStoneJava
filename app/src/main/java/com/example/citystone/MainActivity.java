@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static int projectPressed = 1;
 
     // ktere tlacitko stiskunte AKTIVNI = 0, PASIVNI = 1
-    private static int actPas = 0;
+    public static int actPas = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String string) {
                 HashMap<String, HashMap<String,String>> Hash;
+                Parser.pkey = true;
                 Hash = Parser.parseJsonData( string );
                 createTable( Hash );
                 Order = Hash;

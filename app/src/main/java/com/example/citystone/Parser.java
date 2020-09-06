@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Parser {
 
+    static boolean pkey = true;
+
     public static void main(String[] args ){
 
     }
@@ -40,7 +42,12 @@ public class Parser {
         for( String message : array ){
             list = returnParsed( message, "," );
             help = createMap( list );
-            String[] helpf = changeOccurances( list.get( 0 ), "\"", "" ).split( ":" );
+            String[] helpf;
+            if( pkey == true ) {
+                helpf = changeOccurances(list.get(2), "\"", "").split(":");
+            } else {
+                helpf = changeOccurances(list.get(0), "\"", "").split(":");
+            }
             outer.put( helpf[ 1 ], help );
         }
 
