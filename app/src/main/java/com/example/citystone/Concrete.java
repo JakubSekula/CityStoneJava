@@ -49,7 +49,7 @@ public class Concrete extends AppCompatActivity {
 
     private int getProducts( final String key ){
 
-        String url ="http://planaxis.space/getProducts.php?cobjednavky=" + Order.get( key ).get( "cobjednavky" )+"&pracovisko=" + Order.get( key ).get( "pracovisko" );
+        String url ="https://planaxis.space/getProducts.php?cobjednavky=" + Order.get( key ).get( "cobjednavky" )+"&pracovisko=" + Order.get( key ).get( "pracovisko" );
 
         System.out.println( url );
 
@@ -189,8 +189,9 @@ public class Concrete extends AppCompatActivity {
 
     private void sendMail( String key ){
 
+        // kubasekula@seznam.cz
         // lukas.perina98@gmail.com
-        String email = "kubasekula@seznam.cz";
+        String email = "lukas.perina98@gmail.com";
         String subject = "Ukonceni objednavky " + Order.get( key ).get( "id" ) + " ze strediska '" + Order.get( key ).get( "nazov" ) +"'";
         String message = "Dobry den,\n\nObjednavka s evidencnim cislem: " + Order.get( key ).get( "id" ) + " ze strediska '" + Order.get( key ).get( "nazov" ) + "', byla dne " + getDate() + " uspesne dokoncena.\n\n" +
                 "Poznámka k dokončené objednávce: " + Order.get( key ).get( "poznamka" ) + ". \n\n Odeslano sluzbou CityStoneAPP";
